@@ -156,7 +156,6 @@ void BinarySearchTree<Key, Value>::printRoot (Node<Key, Value>* root) const
     for(size_t levelIndex = 0; levelIndex < printedTreeHeight; ++levelIndex)
     {
         uint16_t numElements =(uint16_t)std::pow(2, levelIndex);
-
         // print elements themselves
         std::cout << std::string(firstElementMargin, ' ');
         for(size_t elementIndex = 0; elementIndex < numElements; ++elementIndex)
