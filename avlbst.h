@@ -323,7 +323,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key,Value>* n, AVLNode<Key,Value>* p
 					n->setBalance(0);
 				}
 				else if(n->getBalance() == -1){
-					p->setBalance(+1);
+					p->setBalance(1);
 					g->setBalance(0);
 					n->setBalance(0);
 				}
@@ -475,6 +475,14 @@ void AVLTree<Key, Value>:: remove(const Key& key)
 		if(rmvNode == NULL)
 			return;
 
+		if(rmvNode->getLeft() != NULL && rmvNode->getRight() != NULL) //if node has both children
+		{
+			AVLNode<Key, Value>* pred = predecessor(rmvNode);
+			nodeSwap(pred, rmvNode);
+			if(this->root_ == rmvNode)
+				this->root_ = pred;
+		}
+
 		int diff = 0;;
 		AVLNode<Key, Value>* parent = rmvNode->getParent();
 
@@ -483,14 +491,6 @@ void AVLTree<Key, Value>:: remove(const Key& key)
 				diff = 1;
 			if(parent->getRight() == rmvNode) //node is a right child
 				diff = -1;
-		}
-
-		if(rmvNode->getLeft() != NULL && rmvNode->getRight() != NULL) //if node has both children
-		{
-			AVLNode<Key, Value>* pred = predecessor(rmvNode);
-			nodeSwap(pred, rmvNode);
-			if(this->root_ == rmvNode)
-				this->root_ = pred;
 		}
 
 		if(rmvNode->getLeft() == NULL && rmvNode->getRight() == NULL) //if node has no children
